@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.henriquefestraits.order_api.enums.OrderStatus;
 import com.henriquefestraits.order_api.model.Order;
+import com.henriquefestraits.order_api.model.OrderRequest;
 import com.henriquefestraits.order_api.repository.OrderRepository;
 import com.henriquefestraits.order_api.service.OrderService;
 import com.henriquefestraits.order_api.strategy.ShippingStrategy;
@@ -29,10 +30,15 @@ public class OrderServiceImpl implements OrderService {
 
     
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(OrderRequest orderRequest) {
 
-        ShippingStrategy shippingStrategy = shippingStrategies.get(order.getOrderType().name());
-        BigDecimal shippingCost = shippingStrategy.calculateShippingCost(order);
+
+        ShippingStrategy shippingStrategy = shippingStrategies.get(orderRequest.getOrderType().name());
+        BigDecimal shippingCost = shippingStrategy.calculateShippingCost(orderRequest);
+        Order order = new Order();
+        order.setCustomerName(orderRequest.getCustomerName());
+        order.setOrderType(orderRequest.getOrderType());
+        order.setTotalAmount(orderRequest.getTotalAmount());
         order.setShippingCost(shippingCost);
         order.setFinalValue(calculateFinalValue(order));
         order.setOrderStatus(OrderStatus.PENDING);

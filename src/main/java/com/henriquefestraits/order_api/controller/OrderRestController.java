@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 
 import com.henriquefestraits.order_api.enums.OrderStatus;
 import com.henriquefestraits.order_api.model.Order;
+import com.henriquefestraits.order_api.model.OrderRequest;
 import com.henriquefestraits.order_api.service.OrderService;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +40,8 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order createdOrder = orderService.createOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest orderRequest) {
+        Order createdOrder = orderService.createOrder(orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
